@@ -90,18 +90,22 @@ var CordsAPI = ({
     const params = new URLSearchParams({
       q
     });
-    if ((options == null ? void 0 : options.page) !== void 0)
+    params.append("lat", options.lat.toString());
+    params.append("lng", options.lng.toString());
+    if (options.page)
       params.append("page", options.page.toString());
-    if ((options == null ? void 0 : options.lat) !== void 0)
-      params.append("lat", options.lat.toString());
-    if ((options == null ? void 0 : options.lng) !== void 0)
-      params.append("lng", options.lng.toString());
-    if ((options == null ? void 0 : options.distance) !== void 0)
+    if (options.pageSize)
+      params.append("pageSize", options.pageSize.toString());
+    if (options.distance)
       params.append("distance", options.distance.toString());
-    if ((options == null ? void 0 : options.filter) !== void 0) {
-      for (const [key, value] of Object.entries(options.filter)) {
-        if (value)
-          params.append(`filter[${key}]`, "true");
+    if (options.partner) {
+      for (const [key, value] of Object.entries(options.partner)) {
+        params.append(`filter[${key}]`, value ? "true" : "false");
+      }
+    }
+    if (options.delivery) {
+      for (const [key, value] of Object.entries(options.delivery)) {
+        params.append(`filter[delivery][${key}]`, value ? "true" : "false");
       }
     }
     const res = yield request(`${url.toString()}?${params}`);
@@ -152,7 +156,6 @@ var CordsAPI = ({
       throw new Error(data2.detail);
     }
     const data = yield res.json();
-    console.log(data);
     return data;
   });
   return {
