@@ -60,7 +60,12 @@ export type ResourceType = {
 export type SearchResourceType = Omit<
 	ResourceType,
 	"website" | "email" | "phoneNumbers" | "addresses" | "address"
->;
+> & {
+	location: {
+		lat: number | null;
+		lng: number | null;
+	};
+};
 
 export type SearchOptions = {
 	lat: number;
@@ -73,6 +78,7 @@ export type SearchOptions = {
 		mentor?: boolean;
 		prosper?: boolean;
 		magnet?: boolean;
+		volunteer?: boolean;
 	};
 	delivery?: {
 		local?: boolean;
